@@ -1,0 +1,30 @@
+<div class="remote-joueur-container">
+  <div class="champ joueur">Vous êtes {{ joueur }}</div>
+  <div class="champ question" *ngIf="showQuestion">{{ question }}</div>
+  <div class="reponse-list" *ngIf="showReponses">
+    <div class="reponse-cash-container" *ngIf="reponsesDisplay.length < 2; else reponsesList">
+      <input class="champ reponse-cash-edit" [(ngModel)]="reponseCashJoueur" />
+      <button
+        class="btn btn-primary champ"
+        (click)="envoyerReponse()"
+        [class.reponse-envoyee]="reponseAEnvoyer !== ''"
+        [class.votes-frozen]="votesFrozen"
+      >
+        {{ reponseAEnvoyer ? 'Réponse envoyée' : 'Valider réponse' }}
+      </button>
+    </div>
+    <ng-template #reponsesList>
+      <div
+        class="choix-reponse champ"
+        *ngFor="let reponse of reponsesDisplay"
+        [class.reponse-selected]="reponseAEnvoyer && reponse === reponseAEnvoyer"
+        [class.reponse-not-selected]="reponseAEnvoyer && reponse !== reponseAEnvoyer"
+        [class.votes-frozen]="votesFrozen && !reponseAEnvoyer"
+        (click)="envoyerReponse(reponse)"
+      >
+        {{ reponse }}
+      </div>
+    </ng-template>
+  </div>
+  <div class="champ warning" *ngIf="votesFrozen && !reponseAEnvoyer">Trop tard !</div>
+</div>

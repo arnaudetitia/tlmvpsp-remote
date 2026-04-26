@@ -1,0 +1,29 @@
+.selection-joueur-container {
+  background-image: url('../../../assets/background/background-compet.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  .joueurs-compet-list {
+    width: 100%;
+    .choix-joueur {
+      width: 80%;
+      margin-left: 10%;
+      margin-bottom: 10vh;
+    }
+
+    .choix-joueur:not(.connected) {
+      cursor: pointer;
+    }
+
+    .connected {
+      opacity: 0.5;
+    }
+  }
+}
