@@ -66,16 +66,21 @@
     .champ {
       border-width: 0.3rem;
     }
+
+    .question {
+      font-size: 1.5rem;
+    }
+
     .reponse-list {
       .choix-reponse {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
       }
     }
 
     .reponse-cash-container {
       button,
       .reponse-cash-edit {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
       }
     }
   }
