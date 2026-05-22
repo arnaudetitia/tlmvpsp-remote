@@ -3,12 +3,11 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
-import { io, Socket } from 'socket.io-client';
 import { QuestionCompetService } from '../../service/question-compet.service';
 import { take, tap } from 'rxjs';
 import { SocketService } from '../../service/socket.service';
-import { QuestionCompetStore } from '../store/question-compet.store';
-import { VotesStore } from '../store/votes.store';
+import { VotesStore } from '../../store/votes.store';
+import { QuestionCompetStore } from '../../store/question-compet.store';
 
 @Component({
   selector: 'app-remote-joueur',

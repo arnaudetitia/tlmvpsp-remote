@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { filter, Observable, of, tap } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable, of, tap } from 'rxjs';
 import { JoueurCompet } from '../../models/joueur-compet';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
 import { CommonModule } from '@angular/common';
