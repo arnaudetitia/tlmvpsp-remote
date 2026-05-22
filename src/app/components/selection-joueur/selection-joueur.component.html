@@ -1,12 +1,15 @@
 <div class="selection-joueur-container">
-  <div class="joueurs-compet-list" *ngIf="joueursCompet$ | async as joueursCompet">
-    <div
-      class="choix-joueur champ"
-      *ngFor="let joueur of joueursCompet"
-      [class.connected]="joueur.connected"
-      (click)="connectJoueur(joueur)"
-    >
-      {{ joueur.nomJoueur }}
+  @if (joueursCompet$ | async; as joueursCompet) {
+    <div class="joueurs-compet-list">
+      @for (joueur of joueursCompet; track joueur) {
+        <div
+          class="choix-joueur champ"
+          [class.connected]="joueur.connected"
+          (click)="connectJoueur(joueur)"
+          >
+          {{ joueur.nomJoueur }}
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>
