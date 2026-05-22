@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { JoueurCompet } from '../../models/joueur-compet';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-selection-joueur',
@@ -28,7 +28,7 @@ export class SelectionJoueurComponent implements OnInit {
       this.joueurCompetService
         .connectJoueur(joueur.nomJoueur)
         .pipe(
-          tap((res) => {
+          tap(() => {
             localStorage.setItem('joueur', joueur.nomJoueur);
             this.router.navigate(['play']);
           }),
