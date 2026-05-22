@@ -55,6 +55,7 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
         tap((statusVotes) => {
           this.showQuestion.set(statusVotes);
           this.showReponses.set(statusVotes);
+          this.votesFrozen.set(statusVotes);
           this.reponseSelected.set(false);
         }),
       )
