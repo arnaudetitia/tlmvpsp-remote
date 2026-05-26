@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Socket, io } from 'socket.io-client';
-import { QuestionCompetStore } from '../components/store/question-compet.store';
-import { VotesStore } from '../components/store/votes.store';
 import { environment } from '../../environments/environment';
+import { VotesStore } from '../store/votes.store';
+import { QuestionCompetStore } from '../store/question-compet.store';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {

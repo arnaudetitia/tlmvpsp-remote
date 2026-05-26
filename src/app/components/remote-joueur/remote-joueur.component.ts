@@ -1,31 +1,29 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
-import { io, Socket } from 'socket.io-client';
 import { QuestionCompetService } from '../../service/question-compet.service';
 import { take, tap } from 'rxjs';
 import { SocketService } from '../../service/socket.service';
-import { QuestionCompetStore } from '../store/question-compet.store';
-import { VotesStore } from '../store/votes.store';
+import { VotesStore } from '../../store/votes.store';
+import { QuestionCompetStore } from '../../store/question-compet.store';
 
 @Component({
   selector: 'app-remote-joueur',
-  imports: [CommonModule, FormsModule, MatButtonModule],
+  imports: [FormsModule, MatButtonModule],
   templateUrl: './remote-joueur.component.html',
   styleUrls: ['./remote-joueur.component.scss'],
 })
 export class RemoteJoueurComponent implements OnInit, OnDestroy {
   joueur: string | null = '';
   reponseCashJoueur = '';
-  question: string = '';
-  showQuestion = false;
-  reponsesDisplay: string[] = [];
-  reponseAEnvoyer: string = '';
-  showReponses: boolean = false;
-  reponseSelected: boolean = false;
-  votesFrozen: boolean = false;
+  question = signal<string>('');
+  showQuestion = signal<boolean>(false);
+  reponsesDisplay = signal<string[]>([]);
+  reponseAEnvoyer = signal<string>('');
+  showReponses = signal<boolean>(false);
+  reponseSelected = signal<boolean>(false);
+  votesFrozen = signal<boolean>(false);
 
   constructor(
     private socketService: SocketService,
@@ -33,7 +31,6 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
     private questionCompetService: QuestionCompetService,
     private questionCompetStore: QuestionCompetStore,
     private votesStore: VotesStore,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -42,14 +39,13 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
     this.questionCompetStore.currentQuestion$
       .pipe(
         tap((questionCompet) => {
-          this.question = questionCompet.question;
-          this.reponsesDisplay = questionCompet.reponsesDisplay;
-          this.showQuestion = false;
-          this.showReponses = false;
-          this.votesFrozen = false;
+          this.question.set(questionCompet.question);
+          this.reponsesDisplay.set(questionCompet.reponsesDisplay);
+          this.showQuestion.set(false);
+          this.showReponses.set(false);
+          this.votesFrozen.set(false);
           this.reponseCashJoueur = '';
-          this.reponseAEnvoyer = '';
-          this.cdr.detectChanges();
+          this.reponseAEnvoyer.set('');
         }),
       )
       .subscribe();
@@ -57,10 +53,10 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
     this.votesStore.votesOpen$
       .pipe(
         tap((statusVotes) => {
-          this.showQuestion = statusVotes;
-          this.showReponses = statusVotes;
-          this.reponseSelected = false;
-          this.cdr.detectChanges();
+          this.showQuestion.set(statusVotes);
+          this.showReponses.set(statusVotes);
+          this.votesFrozen.set(false);
+          this.reponseSelected.set(false);
         }),
       )
       .subscribe();
@@ -68,8 +64,7 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
     this.votesStore.votesFrozen$
       .pipe(
         tap(() => {
-          this.votesFrozen = true;
-          this.cdr.detectChanges();
+          this.votesFrozen.set(true);
         }),
       )
       .subscribe();
@@ -79,19 +74,21 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         tap((currentQuestion: any) => {
-          this.question = currentQuestion[0].question;
-          this.reponsesDisplay = currentQuestion[0].reponsesDisplay;
-          this.reponseAEnvoyer = '';
+          this.question.set(currentQuestion[0].question);
+          this.reponsesDisplay.set(currentQuestion[0].reponsesDisplay);
+          this.reponseAEnvoyer.set('');
         }),
       )
       .subscribe();
   }
 
   envoyerReponse(reponse?: string) {
-    if (this.joueur && !this.reponseSelected && !this.votesFrozen) {
-      this.reponseAEnvoyer = reponse || this.reponseCashJoueur;
-      this.joueurCompetService.envoyerReponseJoueur(this.joueur, this.reponseAEnvoyer).subscribe();
-      this.reponseSelected = true;
+    if (this.joueur && !this.reponseSelected() && !this.votesFrozen()) {
+      this.reponseAEnvoyer.set(reponse || this.reponseCashJoueur);
+      this.joueurCompetService
+        .envoyerReponseJoueur(this.joueur, this.reponseAEnvoyer())
+        .subscribe();
+      this.reponseSelected.set(true);
     }
   }
 
