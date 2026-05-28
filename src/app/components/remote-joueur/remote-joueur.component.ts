@@ -7,6 +7,7 @@ import { take, tap } from 'rxjs';
 import { SocketService } from '../../service/socket.service';
 import { VotesStore } from '../../store/votes.store';
 import { QuestionCompetStore } from '../../store/question-compet.store';
+import { RemoteStorageKey } from '../../models/enums/remote-storage-keys.enum';
 
 @Component({
   selector: 'app-remote-joueur',
@@ -34,7 +35,7 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.joueur = localStorage.getItem('joueur');
+    this.joueur = localStorage.getItem(RemoteStorageKey.NOM_JOUEUR);
 
     this.questionCompetStore.currentQuestion$
       .pipe(
