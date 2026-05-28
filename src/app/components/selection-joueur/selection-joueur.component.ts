@@ -4,6 +4,8 @@ import { JoueurCompet } from '../../models/joueur-compet';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RemoteStorageKey } from '../../models/enums/remote-storage-keys.enum';
+import moment from 'moment';
 
 @Component({
   selector: 'app-selection-joueur',
@@ -29,7 +31,11 @@ export class SelectionJoueurComponent implements OnInit {
         .connectJoueur(joueur.nomJoueur)
         .pipe(
           tap(() => {
-            localStorage.setItem('joueur', joueur.nomJoueur);
+            localStorage.setItem(RemoteStorageKey.NOM_JOUEUR, joueur.nomJoueur);
+            localStorage.setItem(
+              RemoteStorageKey.DATE_EXPIRATION,
+              moment().add(1, 'days').startOf('day').toISOString(),
+            );
             this.router.navigate(['play']);
           }),
         )
