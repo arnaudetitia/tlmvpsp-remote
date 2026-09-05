@@ -28,19 +28,21 @@ export class ConnectJoueurDialogComponent implements OnInit {
   }
 
   connectJoueur(joueur: JoueurCompet) {
-    this.joueurCompetService
-      .connectJoueur(joueur.nomJoueur)
-      .pipe(
-        tap(() => {
-          localStorage.setItem(RemoteStorageKey.NOM_JOUEUR, joueur.nomJoueur);
-          localStorage.setItem(
-            RemoteStorageKey.DATE_EXPIRATION,
-            moment().add(1, 'days').startOf('day').toISOString(),
-          );
-          this.dialogRef.close();
-        }),
-      )
-      .subscribe();
+    if (!joueur.connected) {
+      this.joueurCompetService
+        .connectJoueur(joueur.nomJoueur)
+        .pipe(
+          tap(() => {
+            localStorage.setItem(RemoteStorageKey.NOM_JOUEUR, joueur.nomJoueur);
+            localStorage.setItem(
+              RemoteStorageKey.DATE_EXPIRATION,
+              moment().add(1, 'days').startOf('day').toISOString(),
+            );
+            this.dialogRef.close();
+          }),
+        )
+        .subscribe();
+    }
   }
 
   @HostListener('window:resize')
