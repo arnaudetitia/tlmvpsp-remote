@@ -1,0 +1,27 @@
+[mat-dialog-title] {
+  font-family: 'Segoe UI';
+  font-size: clamp(1rem, 2vh, 1.5rem);
+}
+
+mat-dialog-content {
+  background-image: url('../../../../assets/background/background-compet.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  mat-grid-list {
+    margin-top: 2vh;
+  }
+
+  .champ {
+    border-width: 1px;
+  }
+
+  .choix-joueur:not(.connected) {
+    cursor: pointer;
+  }
+
+  .connected {
+    opacity: 0.5;
+  }
+}

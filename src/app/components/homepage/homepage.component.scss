@@ -17,6 +17,7 @@
 
   .button-group {
     .champ {
+      min-width: 50vw;
       padding: clamp(0.25vw, 0.5vh, 0.5vh);
     }
     .option {
