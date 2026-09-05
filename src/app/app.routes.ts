@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { SelectionJoueurComponent } from './components/selection-joueur/selection-joueur.component';
 import { RemoteJoueurComponent } from './components/remote-joueur/remote-joueur.component';
 import { haveToConnectGuard, joueurGuard } from './guard/joueur.guard';
 import { HomepageComponent } from './components/homepage/homepage.component';
