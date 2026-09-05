@@ -1,0 +1,30 @@
+.homepage-container {
+  background-image: url('../../../assets/background/background-compet.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    height: clamp(30vh, 35vh, 50vh);
+    margin-bottom: 5vh;
+  }
+
+  .button-group {
+    .champ {
+      padding: clamp(0.25vw, 0.5vh, 0.5vh);
+    }
+    .option {
+      margin-top: 5vh;
+      &:hover {
+        border-color: orange;
+        cursor: pointer;
+      }
+    }
+  }
+}
