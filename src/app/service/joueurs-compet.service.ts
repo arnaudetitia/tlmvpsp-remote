@@ -27,7 +27,7 @@ export class JoueurCompetService {
     });
   }
 
-  test() {
-    return this.httpService.put(environment.apiUrl + '/compet/test', {});
+  checkCodeChampion(appCodeChampion: string): Observable<any> {
+    return this.httpService.put(environment.apiUrl + '/compet/champion/check', { appCodeChampion });
   }
 }
