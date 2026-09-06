@@ -1,0 +1,28 @@
+mat-dialog-content {
+  background-image: url('../../../../assets/background/background-compet.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  .login-champion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh;
+  }
+
+  .champ {
+    min-width: 50vw;
+    padding: 1vh;
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+    border-width: 2px !important;
+    font-size: clamp(15px, 20px, 25px);
+
+    &.erreur {
+      margin-top: 3vh;
+      background-color: red;
+    }
+  }
+}
