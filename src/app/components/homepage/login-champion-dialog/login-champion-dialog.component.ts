@@ -8,6 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { RemoteStorageKey } from '../../../models/enums/remote-storage-keys.enum';
 import moment from 'moment';
+import { CompetChampionStore } from '../../../store/compet-champion.store';
 
 @Component({
   selector: 'app-login-champion-dialog.component',
@@ -21,14 +22,18 @@ export class LoginChampionDialogComponent {
   appCodeChampion: string = '';
   error = signal<string | null>(null);
 
-  constructor(private joueurCompetService: JoueurCompetService) {}
+  constructor(
+    private joueurCompetService: JoueurCompetService,
+    private competChampionStore: CompetChampionStore,
+  ) {}
 
   connectChampion() {
     this.error.set(null);
     this.joueurCompetService
       .checkCodeChampion(this.appCodeChampion)
       .pipe(
-        tap(() => {
+        tap((result) => {
+          this.competChampionStore.setCompetChampion(result);
           localStorage.setItem(RemoteStorageKey.CHAMPION_AUTH, 'true');
           localStorage.setItem(
             RemoteStorageKey.DATE_EXPIRATION,
