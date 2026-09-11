@@ -5,6 +5,6 @@ export interface CompetChampion {
 
 interface QuestionSuperCash {
   question: string;
-  bonne_reponse: string;
+  bonneReponse: string;
   ordre: number;
 }

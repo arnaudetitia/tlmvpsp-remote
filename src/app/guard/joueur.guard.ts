@@ -26,7 +26,7 @@ export const haveToConnectGuard: CanActivateFn = (route, state) => {
 export const championGuard: CanActivateFn = () => {
   const router = inject(Router);
 
-  return localStorage.getItem(RemoteStorageKey.CHAMPION_AUTH) === 'true' && !isExpired()
+  return localStorage.getItem(RemoteStorageKey.COMPET_CHAMPION) !== null && !isExpired()
     ? true
     : router.parseUrl('/');
 };

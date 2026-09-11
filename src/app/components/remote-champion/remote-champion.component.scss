@@ -1,0 +1,58 @@
+.remote-champion-container {
+  background-image: url('../../../assets/background/background-compet.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .champ {
+    border-width: 0.5vh;
+    font-size: clamp(0.75rem, 5vh, 1rem);
+  }
+
+  .theme {
+    width: 80vw;
+  }
+
+  .question-selector {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-top: 5vh;
+    width: 60vw;
+
+    .change-question {
+      cursor: pointer;
+      padding: 3vh;
+      mat-icon {
+        transform: scale(2);
+      }
+    }
+
+    .numero-question {
+      width: 30vw;
+      padding: 1vh;
+    }
+
+    .disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .question {
+    width: 75vw;
+    margin-top: 5vh;
+  }
+
+  .reponse {
+    width: 40vw;
+    margin-top: 2.5vh;
+  }
+}
