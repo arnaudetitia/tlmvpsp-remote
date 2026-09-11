@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { JoueurCompet } from '../models/joueur-compet';
-import { Observable, ObservedValueOf, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { CompetChampion } from '../models/questions-super-cash.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +28,9 @@ export class JoueurCompetService {
     });
   }
 
-  test() {
-    return this.httpService.put(environment.apiUrl + '/compet/test', {});
+  checkCodeChampion(appCodeChampion: string): Observable<CompetChampion> {
+    return this.httpService.put<CompetChampion>(environment.apiUrl + '/compet/champion/check', {
+      appCodeChampion,
+    });
   }
 }

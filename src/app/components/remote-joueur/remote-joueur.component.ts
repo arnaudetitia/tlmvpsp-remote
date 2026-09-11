@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
@@ -8,6 +15,7 @@ import { SocketService } from '../../service/socket.service';
 import { VotesStore } from '../../store/votes.store';
 import { QuestionCompetStore } from '../../store/question-compet.store';
 import { RemoteStorageKey } from '../../models/enums/remote-storage-keys.enum';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-remote-joueur',
@@ -17,6 +25,7 @@ import { RemoteStorageKey } from '../../models/enums/remote-storage-keys.enum';
 })
 export class RemoteJoueurComponent implements OnInit, OnDestroy {
   joueur: string | null = '';
+  private deconnexionEnvoyee = false;
   reponseCashJoueur = '';
   question = signal<string>('');
   showQuestion = signal<boolean>(false);
@@ -93,7 +102,29 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('window:pagehide')
+  onPageHide() {
+    this.deconnecterJoueur();
+  }
+
   ngOnDestroy(): void {
-    localStorage.removeItem('joueur');
+    this.deconnecterJoueur();
+  }
+
+  private deconnecterJoueur(): void {
+    if (!this.joueur || this.deconnexionEnvoyee) {
+      return;
+    }
+
+    this.deconnexionEnvoyee = true;
+    localStorage.removeItem(RemoteStorageKey.NOM_JOUEUR);
+    const urlDeconnexion = `${environment.apiUrl}/compet/joueurs/deconnect`;
+
+    fetch(urlDeconnexion, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nomJoueur: this.joueur }),
+      keepalive: true,
+    }).catch(() => undefined);
   }
 }

@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Se connecter en tant que joueur</h2>
+<mat-dialog-content>
+  @if (joueursCompet$ | async; as joueursCompet) {
+    <mat-grid-list
+      [cols]="isPortrait() ? 1 : 2"
+      [rowHeight]="isPortrait() ? '5vh' : '10vh'"
+      gutterSize="2vh"
+    >
+      @for (joueur of joueursCompet; track joueur) {
+        <mat-grid-tile
+          class="champ choix-joueur"
+          [class.connected]="joueur.connected"
+          (click)="connectJoueur(joueur)"
+          >{{ joueur.nomJoueur }}</mat-grid-tile
+        >
+      }
+    </mat-grid-list>
+  }
+</mat-dialog-content>
