@@ -1,1 +1,24 @@
-<p>remote-champion.component works!</p>
+<div class="remote-champion-container">
+  <div class="champ theme">{{ competChampion().libelleTheme }}</div>
+  <div class="question-selector">
+    <div
+      class="champ change-question"
+      [ngClass]="{ disabled: currentOrdreQuestion() === 1 }"
+      (click)="changerIndex(-1)"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </div>
+    <div class="champ numero-question">Question {{ currentOrdreQuestion() }} / 4</div>
+    <div
+      class="champ change-question"
+      [ngClass]="{ disabled: currentOrdreQuestion() === 4 }"
+      (click)="changerIndex(1)"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </div>
+  </div>
+  @if (currentQuestion() !== undefined) {
+    <div class="champ question">{{ currentQuestion()?.question }}</div>
+    <div class="champ reponse">{{ currentQuestion()?.bonneReponse }}</div>
+  }
+</div>

@@ -34,7 +34,7 @@ export class LoginChampionDialogComponent {
       .pipe(
         tap((result) => {
           this.competChampionStore.setCompetChampion(result);
-          localStorage.setItem(RemoteStorageKey.CHAMPION_AUTH, 'true');
+          localStorage.setItem(RemoteStorageKey.COMPET_CHAMPION, JSON.stringify(result));
           localStorage.setItem(
             RemoteStorageKey.DATE_EXPIRATION,
             moment().add(1, 'days').startOf('day').toISOString(),
