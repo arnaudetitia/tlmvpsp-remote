@@ -34,6 +34,7 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
   showReponses = signal<boolean>(false);
   reponseSelected = signal<boolean>(false);
   votesFrozen = signal<boolean>(false);
+  isSuperCash = signal<boolean>(false);
 
   constructor(
     private socketService: SocketService,
@@ -75,6 +76,14 @@ export class RemoteJoueurComponent implements OnInit, OnDestroy {
       .pipe(
         tap(() => {
           this.votesFrozen.set(true);
+        }),
+      )
+      .subscribe();
+
+    this.votesStore.superCash$
+      .pipe(
+        tap(() => {
+          this.isSuperCash.set(true);
         }),
       )
       .subscribe();

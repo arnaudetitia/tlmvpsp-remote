@@ -35,4 +35,10 @@
   @if (votesFrozen() && !reponseAEnvoyer()) {
     <div class="champ warning">Trop tard !</div>
   }
+  @if (isSuperCash()) {
+    <div class="champ super-cash">
+      <div>Ce sont les questions super cash</div>
+      <div>Vous pouvez fermer l'application</div>
+    </div>
+  }
 </div>

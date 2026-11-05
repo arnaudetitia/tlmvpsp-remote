@@ -35,5 +35,10 @@ export class SocketService {
     this.socket.on('freeze-votes', () => {
       this.votesStore.freezeVote();
     });
+
+    this.socket.on('debut-super-cash', () => {
+      this.votesStore.closeVotes();
+      this.votesStore.switchToDebutSuperCash();
+    });
   }
 }

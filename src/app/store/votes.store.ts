@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class VotesStore {
   votesOpen$: Subject<boolean> = new Subject();
   votesFrozen$: Subject<void> = new Subject();
+  superCash$: Subject<boolean> = new Subject();
 
   openVotes() {
     this.votesOpen$.next(true);
@@ -18,5 +19,9 @@ export class VotesStore {
 
   freezeVote() {
     this.votesFrozen$.next();
+  }
+
+  switchToDebutSuperCash() {
+    this.superCash$.next(true);
   }
 }
