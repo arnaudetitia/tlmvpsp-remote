@@ -8,6 +8,12 @@
     >
       Je participe à la compet
     </div>
-    <div class="champ option" (click)="openLoginChampionDialog()">Je suis le champion</div>
+    <div
+      class="champ option"
+      (click)="openLoginChampionDialog()"
+      [ngClass]="{ disabled: !isPartieEnCours() }"
+    >
+      Je suis le champion
+    </div>
   </div>
 </div>
