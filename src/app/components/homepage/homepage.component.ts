@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectJoueurDialogComponent } from './connect-joueur/connect-joueur-dialog.component';
 import { tap } from 'rxjs';
@@ -7,26 +7,50 @@ import { LoginChampionDialogComponent } from './login-champion-dialog/login-cham
 import { RemoteStorageKey } from '../../models/enums/remote-storage-keys.enum';
 import { CompetChampion } from '../../models/questions-super-cash.model';
 import { CompetChampionStore } from '../../store/compet-champion.store';
+import { JoueurCompetService } from '../../service/joueurs-compet.service';
+import { JoueurCompet } from '../../models/joueur-compet';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-homepage',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',
 })
-export class HomepageComponent {
+export class HomepageComponent implements OnInit {
   connectJoueurDialog = inject(MatDialog);
   loginChampionDialog = inject(MatDialog);
 
+  joueursCompet = signal<JoueurCompet[]>([]);
+
+  canConnecterJoueur = computed(() => {
+    return this.joueursCompet().length > 0;
+  });
+
   constructor(
     private competChampionStore: CompetChampionStore,
+    private joueurCompetService: JoueurCompetService,
     private router: Router,
   ) {}
+
+  ngOnInit() {
+    this.joueurCompetService
+      .getJoueursCompet()
+      .pipe(
+        tap((joueurs) => {
+          this.joueursCompet.set(joueurs);
+        }),
+      )
+      .subscribe();
+  }
 
   openConnectJoueurDialog() {
     const connectJoueurDialog = this.connectJoueurDialog.open(ConnectJoueurDialogComponent, {
       width: '75vw',
       disableClose: false,
+      data: {
+        joueursCompet: this.joueursCompet(),
+      },
     });
 
     connectJoueurDialog

@@ -2,7 +2,12 @@ import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { JoueurCompetService } from '../../../service/joueurs-compet.service';
 import { Observable, of, tap } from 'rxjs';
 import { JoueurCompet } from '../../../models/joueur-compet';
-import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import moment from 'moment';
@@ -17,13 +22,14 @@ import { HomepageComponent } from '../homepage.component';
 })
 export class ConnectJoueurDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<HomepageComponent>);
+  data = inject<{ joueursCompet: JoueurCompet[] }>(MAT_DIALOG_DATA);
+
   joueursCompet$: Observable<JoueurCompet[]> = of([]);
   isPortrait = signal(false);
 
   constructor(private joueurCompetService: JoueurCompetService) {}
 
   ngOnInit(): void {
-    this.joueursCompet$ = this.joueurCompetService.getJoueursCompet();
     this.updateOrientation();
   }
 
