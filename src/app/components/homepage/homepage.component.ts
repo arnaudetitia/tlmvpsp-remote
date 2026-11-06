@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectJoueurDialogComponent } from './connect-joueur/connect-joueur-dialog.component';
-import { tap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginChampionDialogComponent } from './login-champion-dialog/login-champion-dialog.component';
 import { RemoteStorageKey } from '../../models/enums/remote-storage-keys.enum';
@@ -10,6 +10,7 @@ import { CompetChampionStore } from '../../store/compet-champion.store';
 import { JoueurCompetService } from '../../service/joueurs-compet.service';
 import { JoueurCompet } from '../../models/joueur-compet';
 import { CommonModule } from '@angular/common';
+import { PartieService } from '../../service/partie.service';
 
 @Component({
   selector: 'app-homepage',
@@ -21,6 +22,7 @@ export class HomepageComponent implements OnInit {
   connectJoueurDialog = inject(MatDialog);
   loginChampionDialog = inject(MatDialog);
 
+  isPartieEnCours = signal<boolean>(false);
   joueursCompet = signal<JoueurCompet[]>([]);
 
   canConnecterJoueur = computed(() => {
@@ -30,15 +32,19 @@ export class HomepageComponent implements OnInit {
   constructor(
     private competChampionStore: CompetChampionStore,
     private joueurCompetService: JoueurCompetService,
+    private partieService: PartieService,
     private router: Router,
   ) {}
 
   ngOnInit() {
-    this.joueurCompetService
-      .getJoueursCompet()
+    combineLatest([
+      this.joueurCompetService.getJoueursCompet(),
+      this.partieService.checkIfPartieEnCours(),
+    ])
       .pipe(
-        tap((joueurs) => {
+        tap(([joueurs, isPartieEnCours]) => {
           this.joueursCompet.set(joueurs);
+          this.isPartieEnCours.set(isPartieEnCours);
         }),
       )
       .subscribe();
